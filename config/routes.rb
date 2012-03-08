@@ -1,4 +1,12 @@
 Smartdj::Application.routes.draw do
+  resources :party_artists
+
+  resources :party_tracks
+
+  resources :users
+
+  resources :parties
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
