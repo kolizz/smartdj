@@ -44,4 +44,5 @@ PartyTrack
 
 PartyArtist
 - name
-- user_id (t.references :user)
+- counter (integer)
+- party_id (t.references :party)

@@ -2,7 +2,8 @@ class CreatePartyArtists < ActiveRecord::Migration
   def change
     create_table :party_artists do |t|
       t.string :name
-      t.references :user
+      t.integer :count
+      t.references :party
 
       t.timestamps
     end

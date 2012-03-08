@@ -40,10 +40,22 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-    @user = User.new(params[:user])
+    hash = JSON.parse(response.body)
+    puts hash
+
+    @user = User.new(name: hash[:name], fb_uid: hash[:fb_uid])
 
     respond_to do |format|
       if @user.save
+        # loop through "artists" and create or increment existing artists by name
+        artists_array = hash[:artists]
+        artists_array.each do |artist|
+          an_artist = TrackArtist.find_or_create_by_name artist[:name]
+          an_artist.party = hash[:party_id]
+          an_artist.counter += 1
+          an_artist.save
+        end
+
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render json: @user, status: :created, location: @user }
       else
