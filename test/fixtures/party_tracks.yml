@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: MyString
+  played_at: 2012-03-08 18:36:44
+  references: 
+  references: 
+
+two:
+  name: MyString
+  played_at: 2012-03-08 18:36:44
+  references: 
+  references: 

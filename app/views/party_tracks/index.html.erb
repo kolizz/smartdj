@@ -1,0 +1,29 @@
+<h1>Listing party_tracks</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Played at</th>
+    <th>References</th>
+    <th>References</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @party_tracks.each do |party_track| %>
+  <tr>
+    <td><%= party_track.name %></td>
+    <td><%= party_track.played_at %></td>
+    <td><%= party_track.references %></td>
+    <td><%= party_track.references %></td>
+    <td><%= link_to 'Show', party_track %></td>
+    <td><%= link_to 'Edit', edit_party_track_path(party_track) %></td>
+    <td><%= link_to 'Destroy', party_track, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Party track', new_party_track_path %>
