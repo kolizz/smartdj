@@ -10,21 +10,18 @@ class PartyTracksController < ApplicationController
     top_artists = PartyArtist.where(['count > 3']).order('count DESC').limit(20)
     artist = top_artists[rand(top_artists.count)]
 
-    url = URI.parse("https://ws.spotify.com/search/1/track.json?q=artist:#{artist.name}")
-    puts "the url: #{url.to_s}"
-    req = Net::HTTP::Get.new(url.path)
-    res = Net::HTTP.start(url.host, url.port) {|http|
-      http.request(req)
-    }
-    puts "the res body: #{res.body}"
+    response = Net::HTTP.get_response(URI.parse("http://ws.spotify.com/search/1/track.json?q=artist:#{artist.name}") )
+    puts "response.body: #{response.body}"
 
-    response_hash = res.body.from_json
+    response_hash = JSON.parse(response.body.to_s)
     tracks = response_hash['tracks']
     puts "tracks: #{tracks}"
-    random_track = tracks[rand(tracks.count)]
-    puts "random_track: #{random_track}"
-    track_url = random_track['href']
-    puts "the track_url: #{track_url}"
+    if (tracks.present?)
+      random_track = tracks[rand(tracks.count)]
+      puts "random_track: #{random_track}"
+      track_url = random_track['href']
+      puts "the track_url: #{track_url}"
+    end
 
     respond_to do |format|
       format.html # index.html.erb
