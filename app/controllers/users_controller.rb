@@ -40,7 +40,9 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-    hash = JSON.parse(response.body)
+    puts "request body: #{request.body.read}"
+
+    hash = JSON.parse(request.body.read.to_s)
     puts hash
 
     @user = User.new(name: hash[:name], fb_uid: hash[:fb_uid])

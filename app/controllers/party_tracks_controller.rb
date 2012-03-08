@@ -1,12 +1,39 @@
+require 'net/http'
+
 class PartyTracksController < ApplicationController
   # GET /party_tracks
   # GET /party_tracks.json
   def index
+    # FIXME: Scope on party_id
     @party_tracks = PartyTrack.all
+
+    top_artists = PartyArtist.where(['count > 3']).order('count DESC').limit(20)
+    artist = top_artists[rand(top_artists.count)]
+
+    url = URI.parse("https://ws.spotify.com/search/1/track.json?q=artist:#{artist.name}")
+    puts "the url: #{url.to_s}"
+    req = Net::HTTP::Get.new(url.path)
+    res = Net::HTTP.start(url.host, url.port) {|http|
+      http.request(req)
+    }
+    puts "the res body: #{res.body}"
+
+    response_hash = res.body.from_json
+    tracks = response_hash['tracks']
+    puts "tracks: #{tracks}"
+    random_track = tracks[rand(tracks.count)]
+    puts "random_track: #{random_track}"
+    track_url = random_track['href']
+    puts "the track_url: #{track_url}"
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @party_tracks }
+      format.json do
+        hash = {
+          'url' => track_url
+        }
+        render json: hash.to_json
+      end
     end
   end
 

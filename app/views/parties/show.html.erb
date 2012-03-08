@@ -1,20 +1,87 @@
-<p id="notice">
-  <%= notice %>
-</p>
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml">
 
-<h1>
-  <%= @party.name %>
-</h1>
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <script src="//code.jquery.com/jquery-1.7.1.min.js"></script>
+</head>
+<body>
 
-<p>
-  You have been invited to this party!
-</p>
+  <p id="notice">
+    <%= notice %>
+  </p>
 
-<p>
-  Please sign in and authorize us to check what artists you've played on Spotify.
-</p>
+  <h1>
+    <%= @party.name %>
+  </h1>
 
-<!-- Do ajax with javascript to get facebook music.likes for signed in user -->
-<!-- Then POST the list of artist names along with the fb_uid to create a new User -->
-<!-- Then return the user_id in a json to the spotify app -->
-<button>Sign In and Authorize</button>
+  <p>
+    You have been invited to this party!
+  </p>
+
+  <p>
+    Please sign in and authorize us to check what artists you've played on Spotify.
+  </p>
+
+
+  <div id="fb-root"></div>
+  <div class="welcome">
+    <a href="#" style="display:block" id="connect">Connect to facebook</a>
+  </div>
+
+
+
+
+
+
+<script>
+function getMyMusicLikes(){
+  FB.api('/me/music', function(response) {
+  //här ska det persistas
+  console.log(response.data);
+  });
+}
+
+
+
+
+
+ window.fbAsyncInit = function() {
+   FB.init({
+     appId      : '330749963639675', // App ID
+     status     : true, // check login status
+     cookie     : true, // enable cookies to allow the server to access the session
+     xfbml      : true,  // parse XFBML
+     oauth      : true
+   });
+
+  FB.getLoginStatus(function(response) {
+     if (response.status === 'connected') {
+  getMyMusicLikes();
+     }else{
+        $('#connect').show();
+     }
+  });
+
+
+  $('#connect').click(function(){
+     FB.login(function(response) {
+
+    }, {scope:'email, user_likes, user_activities'});
+  })
+};
+
+
+ // Load the SDK Asynchronously
+ (function(d){
+    var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+    if (d.getElementById(id)) {return;}
+    js = d.createElement('script'); js.id = id; js.async = true;
+    js.src = "//connect.facebook.net/en_US/all.js";
+    ref.parentNode.insertBefore(js, ref);
+  }(document));
+
+</script>
+</body>
+</html>
