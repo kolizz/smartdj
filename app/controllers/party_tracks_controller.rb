@@ -7,7 +7,7 @@ class PartyTracksController < ApplicationController
     # FIXME: Scope on party_id
     @party_tracks = PartyTrack.all
 
-    top_artists = PartyArtist.where(['count > 3']).order('count DESC').limit(20)
+    top_artists = PartyArtist.where(['count > 1']).order('count DESC').limit(100)
     artist = top_artists[rand(top_artists.count)]
 
     response = Net::HTTP.get_response(URI.parse("http://ws.spotify.com/search/1/track.json?q=artist:#{artist.name}") )
