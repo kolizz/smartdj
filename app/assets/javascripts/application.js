@@ -12,6 +12,4 @@
 //
 //= require mootools
 //= require mootools_ujs
-//= require jquery
-//= require jquery_ujs
 //= require_tree .

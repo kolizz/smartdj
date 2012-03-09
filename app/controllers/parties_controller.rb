@@ -64,8 +64,9 @@ class PartiesController < ApplicationController
         format.json do
           # FULHACK!!
           hash = {
+			id: @party.id,
             name: @party.name,
-            url: "http://smartdj.herokuapp.com/party/#{@party.id}"
+            url: "http://smartdj.local/parties/#{@party.id}"
           }
           render json: hash
         end

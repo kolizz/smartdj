@@ -4,24 +4,17 @@ class PartyTracksController < ApplicationController
   # GET /party_tracks
   # GET /party_tracks.json
   def index
-    # FIXME: Scope on party_id
-    @party_tracks = PartyTrack.all
+    #@party_tracks = PartyTrack.find_all_by_party_id params[:party_id]
 
-    top_artists = PartyArtist.where(['count > 1']).order('count DESC').limit(100)
-    artist = top_artists[rand(top_artists.count)]
+    top_artists = PartyArtist.where(['count >= 1']).where(party_id: params[:party_id]).order('count DESC').limit(100)
 
-    response = Net::HTTP.get_response(URI.parse("http://ws.spotify.com/search/1/track.json?q=artist:#{artist.name}") )
-    puts "response.body: #{response.body}"
+	if top_artists.count == 0
+		render nothing: true, status: 404
+		return
+	end
 
-    response_hash = JSON.parse(response.body.to_s)
-    tracks = response_hash['tracks']
-    puts "tracks: #{tracks}"
-    if (tracks.present?)
-      random_track = tracks[rand(tracks.count)]
-      puts "random_track: #{random_track}"
-      track_url = random_track['href']
-      puts "the track_url: #{track_url}"
-    end
+	random_track = find_track(top_artists)
+	track_url = random_track['href']
 
     respond_to do |format|
       format.html # index.html.erb
@@ -103,5 +96,23 @@ class PartyTracksController < ApplicationController
       format.html { redirect_to party_tracks_url }
       format.json { head :no_content }
     end
+  end
+
+  private
+
+  def find_track (top_artists)
+	  artist = top_artists[rand(top_artists.count)]
+
+	  response = Net::HTTP.get_response(URI.parse("http://ws.spotify.com/search/1/track.json?q=artist:#{CGI::escape(artist.name)}") )
+	  puts "response.body: #{response.body}"
+
+	  response_hash = JSON.parse(response.body.to_s)
+	  tracks = response_hash['tracks']
+	  puts "tracks: #{tracks}"
+	  if (tracks.present?)
+		return tracks[rand(tracks.count)]
+	  else
+		return find_track(top_artists)
+	  end
   end
 end

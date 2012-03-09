@@ -40,21 +40,23 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-    puts "request body: #{request.body.read}"
+	body = request.body.read
+    puts "request body: #{body}"
 
-    hash = JSON.parse(request.body.read.to_s)
+    hash = JSON.parse(body)
     puts hash
 
-    @user = User.new(name: hash[:name], fb_uid: hash[:fb_uid])
+    @user = User.find_or_create_by_fb_uid hash["uid"]
+	@user.name = hash["userName"]
 
     respond_to do |format|
       if @user.save
         # loop through "artists" and create or increment existing artists by name
-        artists_array = hash[:artists]
+        artists_array = hash["artists"]
         artists_array.each do |artist|
-          an_artist = TrackArtist.find_or_create_by_name artist[:name]
-          an_artist.party = hash[:party_id]
-          an_artist.counter += 1
+          an_artist = PartyArtist.find_or_create_by_name artist
+          an_artist.party = Party.find hash["partyId"]
+		  an_artist.count = an_artist.count != nil ? an_artist.count+1 : 1
           an_artist.save
         end
 
