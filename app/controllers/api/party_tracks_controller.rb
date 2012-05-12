@@ -8,13 +8,13 @@ class Api::PartyTracksController < ApplicationController
 
     top_artists = PartyArtist.where(['count >= 1']).where(party_id: params[:party_id]).order('count DESC').limit(100)
 
-	if top_artists.count == 0
-		render nothing: true, status: 404
-		return
-	end
+	  if top_artists.count == 0
+		  render nothing: true, status: 404
+		  return
+	  end
 
-	random_track = find_track(top_artists)
-	track_url = random_track['href']
+	  random_track = find_track(top_artists)
+	  track_url = random_track['href']
 
     respond_to do |format|
       format.html # index.html.erb
@@ -100,7 +100,7 @@ class Api::PartyTracksController < ApplicationController
 
   private
 
-  def find_track (top_artists)
+  def find_track(top_artists)
 	  artist = top_artists[rand(top_artists.count)]
 
 	  response = Net::HTTP.get_response(URI.parse("http://ws.spotify.com/search/1/track.json?q=artist:#{CGI::escape(artist.name)}") )
@@ -110,9 +110,9 @@ class Api::PartyTracksController < ApplicationController
 	  tracks = response_hash['tracks']
 	  puts "tracks: #{tracks}"
 	  if (tracks.present?)
-		return tracks[rand(tracks.count)]
+		  return tracks[rand(tracks.count)]
 	  else
-		return find_track(top_artists)
+		  return find_track(top_artists)
 	  end
   end
 end

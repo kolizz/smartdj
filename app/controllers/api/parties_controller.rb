@@ -47,26 +47,17 @@ class Api::PartiesController < ApplicationController
   # POST /parties
   # POST /parties.json
   def create
-    @party = Party.new(params[:party])
-
-    # ta in parametrar skapa nytt party
-    # POST /parties?name=MyParty
-
-    # Respond with JSON containing
-    # {
-    #   "name" : "MyParty",
-    #   "url" : "https://smartdj.herokuapp.com/party/4"
-    # }
+    @party = Party.new
+    @party.name = params[:name]
 
     respond_to do |format|
       if @party.save
         format.html { redirect_to @party, notice: 'Party was successfully created.' }
         format.json do
-          # FULHACK!!
           hash = {
-			id: @party.id,
+  			    id: @party.id,
             name: @party.name,
-            url: "http://smartdj.local/parties/#{@party.id}"
+            url: "http://smartdj.local:3000/#{@party.id}"
           }
           render json: hash
         end
