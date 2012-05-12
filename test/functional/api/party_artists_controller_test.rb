@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class PartyArtistsControllerTest < ActionController::TestCase
+class Api::PartyArtistsControllerTest < ActionController::TestCase
   setup do
     @party_artist = party_artists(:one)
   end

@@ -1,4 +1,4 @@
-class PartyArtistsController < ApplicationController
+class Api::PartyArtistsController < ApplicationController
   # GET /party_artists
   # GET /party_artists.json
   def index

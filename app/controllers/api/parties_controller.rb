@@ -1,4 +1,4 @@
-class PartiesController < ApplicationController
+class Api::PartiesController < ApplicationController
   # GET /parties
   # GET /parties.json
   def index

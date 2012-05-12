@@ -1,0 +1,51 @@
+<p id="notice">
+  <%= notice %>
+</p>
+
+<h1>
+  <%= @party.name %>
+</h1>
+
+<p>
+  You have been invited to this party!
+</p>
+
+<p>
+  Please sign in and authorize us to check what artists you've played on Spotify.
+</p>
+
+<div class="welcome">
+  <a href="#" class="hidden" id="connect">Connect to facebook</a>
+</div>
+
+<style type="text/css">
+
+</style>
+
+<div id="fb-root"></div>
+<script type="text/javascript">
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId:'330749963639675', // App ID
+            status:true, // check login status
+            cookie:true, // enable cookies to allow the server to access the session
+            xfbml:true, // parse XFBML
+            oauth:true
+        });
+
+        new ArtistLookup(<%= @party._id %>);
+    };
+
+    // Load the SDK Asynchronously
+    (function (d) {
+        var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+        if (d.getElementById(id)) {
+            return;
+        }
+        js = d.createElement('script');
+        js.id = id;
+        js.async = true;
+        js.src = "//connect.facebook.net/en_US/all.js";
+        ref.parentNode.insertBefore(js, ref);
+    }(document));
+</script>

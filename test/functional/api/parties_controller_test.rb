@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class PartiesControllerTest < ActionController::TestCase
+class Api::PartiesControllerTest < ActionController::TestCase
   setup do
     @party = parties(:one)
   end

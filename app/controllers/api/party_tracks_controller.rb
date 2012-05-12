@@ -1,6 +1,6 @@
 require 'net/http'
 
-class PartyTracksController < ApplicationController
+class Api::PartyTracksController < ApplicationController
   # GET /party_tracks
   # GET /party_tracks.json
   def index

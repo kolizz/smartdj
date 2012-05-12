@@ -1,11 +1,10 @@
 Smartdj::Application.routes.draw do
-  resources :party_artists
 
-  resources :party_tracks
+  get ":party_id" => "party#index"
 
-  resources :users
-
-  resources :parties
+  scope path: "api", module: "api" do
+    resources :party_artists, :party_tracks, :users, :parties
+  end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

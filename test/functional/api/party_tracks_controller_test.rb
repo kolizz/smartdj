@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class PartyTracksControllerTest < ActionController::TestCase
+class Api::PartyTracksControllerTest < ActionController::TestCase
   setup do
     @party_track = party_tracks(:one)
   end
